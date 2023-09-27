@@ -1,7 +1,7 @@
-stages:        
+stages:
   - test
   - deploy
-  
+
 default:
   image: docker:24.0.5
   services:
@@ -10,21 +10,12 @@ default:
 test-job:
   stage: test
   script:
-    - echo $CI_REGISTRY_IMAGE
-    - echo $CI_REGISTRY
-    - echo $CI_JOB_IMAGE
-
-
-test-job:
-  stage: test
-  script:
     - docker build -t $CI_REGISTRY_IMAGE -f ./client/Dockerfile.dev ./client
     - docker run -e CI=true $CI_REGISTRY_IMAGE npm test -- --coverage
-    
+
 deploy-job:
   stage: deploy
-  script: 
-    
+  script:
     - docker build -t theotar995/multi-client ./client
     - docker build -t theotar995/multi-nginx ./client
     - docker build -t theotar995/multi-server ./server
