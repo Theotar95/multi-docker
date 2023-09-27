@@ -1,0 +1,21 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t theotar995/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true theotar995/react-test npm test -- --coverage
+
+after_sucess:
+  - docker build -t theotar995/multi-client ./client
+  - docker build -t theotar995/multi-nginx ./client
+  - docker build -t theotar995/multi-server ./server
+  - docker build -t theotar995/multi-worker ./worker
+
+  - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_ID}" --password-stdin
+  - docker push theotar995/multi-client
+  - docker push theotar995/multi-nginx
+  - docker push theotar995/multi-server
+  - docker push theotar995/multi-worker
