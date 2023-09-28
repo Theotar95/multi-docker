@@ -17,7 +17,7 @@ deploy-job:
   stage: deploy
   script:
     - docker build -t theotar995/multi-client ./client
-    - docker build -t theotar995/multi-nginx ./client
+    - docker build -t theotar995/multi-nginx ./nginx
     - docker build -t theotar995/multi-server ./server
     - docker build -t theotar995/multi-worker ./worker
 
